@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/data/data/com.termux/files/home/myp_ua/build/cmake_install.cmake",
+		"/data/data/com.termux/files/home/myp_ua/build/_deps/fmt-build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

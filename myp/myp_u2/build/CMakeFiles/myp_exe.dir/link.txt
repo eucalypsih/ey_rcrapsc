@@ -1,0 +1,1 @@
+/data/data/com.termux/files/usr/bin/c++ -g -Xlinker --dependency-file=CMakeFiles/myp_exe.dir/link.d CMakeFiles/myp_exe.dir/source/main.cpp.o -o myp-app-d  libmyp_lib.a /data/data/com.termux/files/home/.cmake_fetchcontent_cache/fmt-build/libfmtd.a

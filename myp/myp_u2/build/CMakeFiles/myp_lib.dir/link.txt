@@ -1,0 +1,2 @@
+/data/data/com.termux/files/usr/bin/llvm-ar qc libmyp_lib.a CMakeFiles/myp_lib.dir/source/lib.cpp.o
+/data/data/com.termux/files/usr/bin/llvm-ranlib libmyp_lib.a

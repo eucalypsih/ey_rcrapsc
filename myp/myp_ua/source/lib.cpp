@@ -1,0 +1,113 @@
+#include "lib.hpp"
+
+#include <fmt/format.h>
+#include <fmt/chrono.h>
+#include <algorithm>
+#include <cctype>
+
+library::library()
+    : name {fmt::format("{}", "myp")}
+{
+}
+
+auto library::greet(std::string const& user_name) const -> std::string
+{
+  return fmt::format("Halo {}, selamat datang di {} (v{})!", user_name, name, version);
+}
+
+auto library::is_valid_name(std::string const& user_name) const -> bool
+{
+  // Validasi: tidak boleh kosong
+  if (user_name.empty()) {
+    return false;
+  }
+  
+  // Validasi: tidak boleh hanya berisi karakter spasi/whitespace
+  return !std::all_of(user_name.begin(), user_name.end(), [](unsigned char ch) {
+    return std::isspace(ch);
+  });
+}
+
+auto library::to_slug(std::string const& text) const -> std::string
+{
+  std::string result = text;
+  
+  // 1. Ubah semua huruf menjadi kecil (lowercase)
+  std::transform(result.begin(), result.end(), result.begin(), [](unsigned char c) {
+    return std::tolower(c);
+  });
+
+  // 2. Ganti spasi menjadi tanda hubung '-'
+  std::transform(result.begin(), result.end(), result.begin(), [](char c) {
+    return (c == ' ') ? '-' : c;
+  });
+
+  return result;
+}
+
+auto library::analyze_text(std::string const& text) const -> text_stats
+{
+  text_stats stats;
+
+  for (unsigned char const ch : text) {
+    if (std::isalpha(ch)) {
+      stats.letters++;
+    } else if (std::isdigit(ch)) {
+      stats.digits++;
+    } else if (std::isspace(ch)) {
+      stats.spaces++;
+    }
+  }
+
+  return stats;
+}
+
+auto library::encrypt_caesar(std::string const& text, int shift) const -> std::string
+{
+  std::string result = text;
+  // Pastikan shift berada di rentang 0-25
+  int const effective_shift = (shift % 26 + 26) % 26;
+
+  for (char& ch : result) {
+    if (std::isupper(ch)) {
+      ch = static_cast<char>('A' + (ch - 'A' + effective_shift) % 26);
+    } else if (std::islower(ch)) {
+      ch = static_cast<char>('a' + (ch - 'a' + effective_shift) % 26);
+    }
+  }
+  return result;
+}
+
+auto library::get_current_timestamp() const -> std::string
+{
+  // Mengambil waktu sekarang dari jam sistem
+  auto const now = std::chrono::system_clock::now();
+  auto const time_t_now = std::chrono::system_clock::to_time_t(now);
+  
+  // Mengonversi ke waktu lokal dengan aman menggunakan struktur std::tm
+  std::tm const local_time = *std::localtime(&time_t_now);
+
+  // Memanfaatkan pustaka fmt::format untuk mencetak waktu dengan format ISO-like
+  return fmt::format("{:%Y-%m-%d %H:%M:%S}", local_time);
+}
+
+auto library::is_strong_password(std::string const& password) const -> bool
+{
+  // Syarat 1: Panjang minimal 8 karakter
+  if (password.length() < 8) {
+    return false;
+  }
+
+  bool has_upper = false;
+  bool has_lower = false;
+  bool has_digit = false;
+
+  for (unsigned char const ch : password) {
+    if (std::isupper(ch)) has_upper = true;
+    if (std::islower(ch)) has_lower = true;
+    if (std::isdigit(ch)) has_digit = true;
+  }
+
+  // Harus memenuhi semua kriteria tersisa
+  return has_upper && has_lower && has_digit;
+}

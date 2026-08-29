@@ -1,0 +1,1 @@
+/data/data/com.termux/files/usr/bin/c++ -O2 -g -DNDEBUG -Xlinker --dependency-file=CMakeFiles/myp_exe.dir/link.d CMakeFiles/myp_exe.dir/source/main.cpp.o CMakeFiles/myp_lib.dir/source/lib.cpp.o -o myp  _deps/fmt-build/libfmt.a
