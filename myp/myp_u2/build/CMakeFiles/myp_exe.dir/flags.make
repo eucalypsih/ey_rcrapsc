@@ -4,7 +4,7 @@
 # compile CXX with /data/data/com.termux/files/usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/data/data/com.termux/files/home/myp_u2/source
+CXX_INCLUDES = -I/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/source
 
-CXX_FLAGS = -g -std=gnu++20
+CXX_FLAGS = -g -std=c++20
 

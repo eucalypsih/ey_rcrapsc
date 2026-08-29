@@ -1,7 +1,7 @@
-/data/data/com.termux/files/home/myp_u2/dist/bin/myp-app-d
-/data/data/com.termux/files/home/myp_u2/dist/lib/libmyp_lib.a
-/data/data/com.termux/files/home/myp_u2/dist/include/myp/lib.hpp
-/data/data/com.termux/files/home/myp_u2/dist/lib/cmake/myp/mypTargets.cmake
-/data/data/com.termux/files/home/myp_u2/dist/lib/cmake/myp/mypTargets-debug.cmake
-/data/data/com.termux/files/home/myp_u2/dist/lib/cmake/myp/mypConfigVersion.cmake
-/data/data/com.termux/files/home/myp_u2/dist/lib/cmake/myp/mypConfig.cmake
+/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/dist/bin/myp-app-d
+/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/dist/lib/libmyp_lib.a
+/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/dist/include/myp/lib.hpp
+/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/dist/lib/cmake/myp/mypTargets.cmake
+/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/dist/lib/cmake/myp/mypTargets-debug.cmake
+/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/dist/lib/cmake/myp/mypConfigVersion.cmake
+/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/dist/lib/cmake/myp/mypConfig.cmake

@@ -10,6 +10,11 @@ project(
     LANGUAGES CXX
 )
 
+# Mengunci standar C++ ke versi C++17 atau C++20
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 

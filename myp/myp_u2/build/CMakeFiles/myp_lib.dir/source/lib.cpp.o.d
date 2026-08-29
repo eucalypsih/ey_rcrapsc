@@ -1,6 +1,6 @@
 CMakeFiles/myp_lib.dir/source/lib.cpp.o: \
-  /data/data/com.termux/files/home/myp_u2/source/lib.cpp \
-  /data/data/com.termux/files/home/myp_u2/source/lib.hpp \
+  /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/source/lib.cpp \
+  /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/source/lib.hpp \
   /data/data/com.termux/files/usr/bin/../../usr/include/c++/v1/string \
   /data/data/com.termux/files/usr/bin/../../usr/include/c++/v1/__algorithm/max.h \
   /data/data/com.termux/files/usr/bin/../../usr/include/c++/v1/__algorithm/comp.h \

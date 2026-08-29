@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/data/data/com.termux/files/home/myp_u2/source/main.cpp" "CMakeFiles/myp_exe.dir/source/main.cpp.o" "gcc" "CMakeFiles/myp_exe.dir/source/main.cpp.o.d"
+  "/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/source/main.cpp" "CMakeFiles/myp_exe.dir/source/main.cpp.o" "gcc" "CMakeFiles/myp_exe.dir/source/main.cpp.o.d"
   "" "myp-app-d" "gcc" "CMakeFiles/myp_exe.dir/link.d"
   )
 

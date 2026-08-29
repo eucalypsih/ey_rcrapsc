@@ -1,5 +1,5 @@
 CMakeFiles/myp_exe.dir/source/main.cpp.o: \
-  /data/data/com.termux/files/home/myp_u2/source/main.cpp \
+  /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/source/main.cpp \
   /data/data/com.termux/files/usr/bin/../../usr/include/c++/v1/iostream \
   /data/data/com.termux/files/usr/bin/../../usr/include/c++/v1/__config \
   /data/data/com.termux/files/usr/bin/../../usr/include/c++/v1/__config_site \
@@ -865,4 +865,4 @@ CMakeFiles/myp_exe.dir/source/main.cpp.o: \
   /data/data/com.termux/files/usr/bin/../../usr/include/c++/v1/stack \
   /data/data/com.termux/files/usr/bin/../../usr/include/c++/v1/print \
   /data/data/com.termux/files/usr/bin/../../usr/include/unistd.h \
-  /data/data/com.termux/files/home/myp_u2/source/lib.hpp
+  /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/source/lib.hpp

@@ -53,10 +53,10 @@ RM = /data/data/com.termux/files/usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /data/data/com.termux/files/home/myp_u2
+CMAKE_SOURCE_DIR = /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /data/data/com.termux/files/home/myp_u2/build
+CMAKE_BINARY_DIR = /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/myp_lib.dir/depend.make
@@ -73,18 +73,18 @@ CMakeFiles/myp_lib.dir/codegen:
 .PHONY : CMakeFiles/myp_lib.dir/codegen
 
 CMakeFiles/myp_lib.dir/source/lib.cpp.o: CMakeFiles/myp_lib.dir/flags.make
-CMakeFiles/myp_lib.dir/source/lib.cpp.o: /data/data/com.termux/files/home/myp_u2/source/lib.cpp
+CMakeFiles/myp_lib.dir/source/lib.cpp.o: /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/source/lib.cpp
 CMakeFiles/myp_lib.dir/source/lib.cpp.o: CMakeFiles/myp_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/data/data/com.termux/files/home/myp_u2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/myp_lib.dir/source/lib.cpp.o"
-	/data/data/com.termux/files/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/myp_lib.dir/source/lib.cpp.o -MF CMakeFiles/myp_lib.dir/source/lib.cpp.o.d -o CMakeFiles/myp_lib.dir/source/lib.cpp.o -c /data/data/com.termux/files/home/myp_u2/source/lib.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/myp_lib.dir/source/lib.cpp.o"
+	/data/data/com.termux/files/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/myp_lib.dir/source/lib.cpp.o -MF CMakeFiles/myp_lib.dir/source/lib.cpp.o.d -o CMakeFiles/myp_lib.dir/source/lib.cpp.o -c /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/source/lib.cpp
 
 CMakeFiles/myp_lib.dir/source/lib.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/myp_lib.dir/source/lib.cpp.i"
-	/data/data/com.termux/files/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /data/data/com.termux/files/home/myp_u2/source/lib.cpp > CMakeFiles/myp_lib.dir/source/lib.cpp.i
+	/data/data/com.termux/files/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/source/lib.cpp > CMakeFiles/myp_lib.dir/source/lib.cpp.i
 
 CMakeFiles/myp_lib.dir/source/lib.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/myp_lib.dir/source/lib.cpp.s"
-	/data/data/com.termux/files/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /data/data/com.termux/files/home/myp_u2/source/lib.cpp -o CMakeFiles/myp_lib.dir/source/lib.cpp.s
+	/data/data/com.termux/files/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/source/lib.cpp -o CMakeFiles/myp_lib.dir/source/lib.cpp.s
 
 # Object files for target myp_lib
 myp_lib_OBJECTS = \
@@ -96,7 +96,7 @@ myp_lib_EXTERNAL_OBJECTS =
 libmyp_lib.a: CMakeFiles/myp_lib.dir/source/lib.cpp.o
 libmyp_lib.a: CMakeFiles/myp_lib.dir/build.make
 libmyp_lib.a: CMakeFiles/myp_lib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/data/data/com.termux/files/home/myp_u2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libmyp_lib.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libmyp_lib.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/myp_lib.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/myp_lib.dir/link.txt --verbose=$(VERBOSE)
 
@@ -109,6 +109,6 @@ CMakeFiles/myp_lib.dir/clean:
 .PHONY : CMakeFiles/myp_lib.dir/clean
 
 CMakeFiles/myp_lib.dir/depend:
-	cd /data/data/com.termux/files/home/myp_u2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /data/data/com.termux/files/home/myp_u2 /data/data/com.termux/files/home/myp_u2 /data/data/com.termux/files/home/myp_u2/build /data/data/com.termux/files/home/myp_u2/build /data/data/com.termux/files/home/myp_u2/build/CMakeFiles/myp_lib.dir/DependInfo.cmake "--color=$(COLOR)" myp_lib
+	cd /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2 /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2 /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build/CMakeFiles/myp_lib.dir/DependInfo.cmake "--color=$(COLOR)" myp_lib
 .PHONY : CMakeFiles/myp_lib.dir/depend
 

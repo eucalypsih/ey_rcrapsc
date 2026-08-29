@@ -1,8 +1,8 @@
-# Install script for directory: /data/data/com.termux/files/home/myp_u2
+# Install script for directory: /data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/data/data/com.termux/files/home/myp_u2/dist")
+  set(CMAKE_INSTALL_PREFIX "/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/dist")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -54,7 +54,7 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/myp-app-d"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/data/data/com.termux/files/home/myp_u2/build/myp-app-d")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build/myp-app-d")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/myp-app-d" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/myp-app-d")
     if(CMAKE_INSTALL_DO_STRIP)
@@ -64,18 +64,18 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/data/data/com.termux/files/home/myp_u2/build/libmyp_lib.a")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE STATIC_LIBRARY FILES "/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build/libmyp_lib.a")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/myp" TYPE DIRECTORY FILES "/data/data/com.termux/files/home/myp_u2/source/" FILES_MATCHING REGEX "/[^/]*\\.hpp$" REGEX "/[^/]*\\.h$")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/myp" TYPE DIRECTORY FILES "/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/source/" FILES_MATCHING REGEX "/[^/]*\\.hpp$" REGEX "/[^/]*\\.h$")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/myp/mypTargets.cmake")
     file(DIFFERENT _cmake_export_file_changed FILES
          "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/myp/mypTargets.cmake"
-         "/data/data/com.termux/files/home/myp_u2/build/CMakeFiles/Export/a568b772bd46cbfe4db98ea4a8687359/mypTargets.cmake")
+         "/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build/CMakeFiles/Export/a568b772bd46cbfe4db98ea4a8687359/mypTargets.cmake")
     if(_cmake_export_file_changed)
       file(GLOB _cmake_old_config_files "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/myp/mypTargets-*.cmake")
       if(_cmake_old_config_files)
@@ -88,24 +88,24 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
     endif()
     unset(_cmake_export_file_changed)
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/myp" TYPE FILE FILES "/data/data/com.termux/files/home/myp_u2/build/CMakeFiles/Export/a568b772bd46cbfe4db98ea4a8687359/mypTargets.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/myp" TYPE FILE FILES "/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build/CMakeFiles/Export/a568b772bd46cbfe4db98ea4a8687359/mypTargets.cmake")
   if(CMAKE_INSTALL_CONFIG_NAME MATCHES "^([Dd][Ee][Bb][Uu][Gg])$")
-    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/myp" TYPE FILE FILES "/data/data/com.termux/files/home/myp_u2/build/CMakeFiles/Export/a568b772bd46cbfe4db98ea4a8687359/mypTargets-debug.cmake")
+    file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/myp" TYPE FILE FILES "/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build/CMakeFiles/Export/a568b772bd46cbfe4db98ea4a8687359/mypTargets-debug.cmake")
   endif()
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/myp" TYPE FILE FILES "/data/data/com.termux/files/home/myp_u2/build/mypConfigVersion.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/myp" TYPE FILE FILES "/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build/mypConfigVersion.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/myp" TYPE FILE FILES "/data/data/com.termux/files/home/myp_u2/build/mypConfig.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/myp" TYPE FILE FILES "/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build/mypConfig.cmake")
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/data/data/com.termux/files/home/myp_u2/build/install_local_manifest.txt"
+  file(WRITE "/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
 if(CMAKE_INSTALL_COMPONENT)
@@ -121,6 +121,6 @@ else()
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/data/data/com.termux/files/home/myp_u2/build/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "/data/data/com.termux/files/home/ey_rcrapsc/myp/myp_u2/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
