@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.8...3.28)
+project(CekVersi)
+message(STATUS "CMake Versi: ${CMAKE_VERSION}")
+message(STATUS "CMake Major Versi: ${CMAKE_MAJOR_VERSION}")
+message(STATUS "CMake Minor Versi: ${CMAKE_MINOR_VERSION}")
