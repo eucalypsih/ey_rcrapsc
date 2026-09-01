@@ -41,7 +41,9 @@ Variabel di bawah ini berasal dari modul internal `GNUInstallDirs` untuk standar
 `cmake -B build -DCMAKE_INSTALL_PREFIX=/home/user/my_libraries/fmt` Mengubah Lokasi Folder Instalasi Akhir
 `cmake -B build -DCMAKE_CXX_STANDARD=20` Memaksa Kompilasi Kompatibilitas Modern C++
 
+`$<BUILD_INTERFACE:...>` & `$<INSTALL_INTERFACE:...>`: Menyelesaikan error pertama. Saat Anda mengompilasi proyek di komputer lokal, compiler akan membaca folder source/. Namun, saat proyek diekspor ke orang lain, file ekspor secara otomatis akan dialihkan untuk membaca folder include/myp hasil instalasi.
 
+`$<LINK_ONLY:fmt::fmt>`: Menyelesaikan error kedua. Fungsi pembungkus ini memberi tahu CMake: "Gunakan pustaka fmt ini hanya untuk mencarikan simbol biner saat proses kompilasi executable lokal kita, tapi hapus total nama target fmt ini dari file ekspor agar tidak ditagih ke pengguna luar."
 
 
 
