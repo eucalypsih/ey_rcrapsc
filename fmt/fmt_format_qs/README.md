@@ -2447,6 +2447,381 @@ Langkah ini melengkapi siklus pemformatan bagian belakang notasi ilmiah. Apakah 
 
 <br>
 
+qs: 
+`awk '{if(NR>=1588) print; if(NR==1633) exit}' $HOME/.cmake_fetchcontent_cache/fmt-v12.2.0/fmt-src/include/fmt/format.h`
+```cpp
+// A floating-point number f * pow(2, e) where F is an unsigned type.
+template <typename F> struct basic_fp {
+  F f;
+  int e;
+                                                                                                                               static constexpr int num_significand_bits =
+      static_cast<int>(sizeof(F) * num_bits<unsigned char>());
+
+  constexpr basic_fp() : f(0), e(0) {}
+  constexpr basic_fp(uint64_t f_val, int e_val) : f(f_val), e(e_val) {}
+
+  // Constructs fp from an IEEE754 floating-point number.                                                                      template <typename Float> FMT_CONSTEXPR basic_fp(Float n) { assign(n); }                                                                                                                                                                                  // Assigns n to this and return true iff predecessor is closer than successor.
+  template <typename Float, FMT_ENABLE_IF(!is_double_double<Float>::value)>
+  FMT_CONSTEXPR auto assign(Float n) -> bool {
+    static_assert(std::numeric_limits<Float>::digits <= 113, "unsupported FP");
+    // Assume Float is in the format [sign][exponent][significand].
+    using carrier_uint = typename dragonbox::float_info<Float>::carrier_uint;                                                    const auto num_float_significand_bits =
+        detail::num_significand_bits<Float>();
+    const auto implicit_bit = carrier_uint(1) << num_float_significand_bits;
+    const auto significand_mask = implicit_bit - 1;
+    auto u = bit_cast<carrier_uint>(n);
+    f = static_cast<F>(u & significand_mask);
+    auto biased_e = static_cast<int>((u & exponent_mask<Float>()) >>
+                                     num_float_significand_bits);
+    // The predecessor is closer if n is a normalized power of 2 (f == 0)
+    // other than the smallest normalized number (biased_e > 1).                                                                 auto is_predecessor_closer = f == 0 && biased_e > 1;
+    if (biased_e == 0)
+      biased_e = 1;  // Subnormals use biased exponent 1 (min exponent).
+    else if (has_implicit_bit<Float>())
+      f += static_cast<F>(implicit_bit);
+    e = biased_e - exponent_bias<Float>() - num_float_significand_bits;
+    if (!has_implicit_bit<Float>()) ++e;
+    return is_predecessor_closer;
+  }
+
+  template <typename Float, FMT_ENABLE_IF(is_double_double<Float>::value)>
+  FMT_CONSTEXPR auto assign(Float n) -> bool {
+    static_assert(std::numeric_limits<double>::is_iec559, "unsupported FP");
+    return assign(static_cast<double>(n));
+  }
+};
+
+```
+
+<br>
+
+aa: 
+Struktur `basic_fp` (singkatan dari *Basic Floating-Point*) adalah penampung internal dalam pustaka `{fmt}` untuk merepresentasikan angka pecahan biner dalam format mentah matematika:
+
+\(\text{Nilai}=f\times 2^{e}\)
+
+Di mana `f` adalah *significand* murni (tanpa bit implisit tersembunyi), dan `e` adalah eksponen biner berbasis 2.
+
+Fungsi paling krusial di dalam struktur ini adalah `assign(Float n)`. Fungsi ini bertugas melakukan dekoding bitwise tingkat rendah: membedah bit-bit dari tipe data `float` atau `double` standar (IEEE 754), mengisolasi masker, menyuntikkan bit implisit yang hilang, dan membersihkan bias eksponen.
+
+💡 Cara Menggunakan Secara Mandiri (Standalone)
+
+Agar kode hasil ekstrak `awk` Anda dapat dikompilasi secara mandiri, Anda harus melengkapinya dengan fungsi-fungsi pendukung yang telah Anda ekstrak dari diskusi sebelumnya (`num_significand_bits`, `exponent_mask`, `exponent_bias`, `has_implicit_bit`), serta menambahkan simulasi untuk fungsi `bit_cast` dan makro SFINAE (`FMT_ENABLE_IF`).
+
+Berikut adalah contoh implementasi lengkap siap pakai:
+```cpp
+#include <iostream>
+#include <cstdint>
+#include <limits>
+#include <type_traits>
+#include <cstring>
+
+// =========================================================================
+// 1. STRUKTUR & FUNGSI PENDUKUNG (HASIL DISKUSI SEBELUMNYA + STANDAR)
+// =========================================================================
+
+// Pengganti bit_cast (Gunakan std::bit_cast jika menggunakan C++20)
+template <typename To, typename From>
+To bit_cast(const From& src) noexcept {
+    static_assert(sizeof(To) == sizeof(From), "Size mismatch for bit_cast");
+    To dst;
+    std::memcpy(&dst, &src, sizeof(To));
+    return dst;
+}
+
+// Mocking is_double_double untuk kesederhanaan compile-time
+template <typename T> struct is_double_double : std::false_type {};
+template <typename T> struct is_float128 : std::false_type {};
+
+namespace dragonbox {
+    template <typename T> struct float_info;
+    template <> struct float_info<float> {
+        using carrier_uint = uint32_t;
+        static constexpr int exponent_bits = 8;
+    };
+    template <> struct float_info<double> {
+        using carrier_uint = uint64_t;
+        static constexpr int exponent_bits = 11;
+    };
+
+    template <typename Float> constexpr auto has_implicit_bit() -> bool {
+        return std::numeric_limits<Float>::digits != 64;
+    }
+
+    template <typename Float> constexpr auto num_significand_bits() -> int {
+        return is_float128<Float>() ? 112 : (std::numeric_limits<Float>::digits - (has_implicit_bit<Float>() ? 1 : 0));
+    }
+
+    template <typename Float> constexpr auto exponent_mask() -> typename float_info<Float>::carrier_uint {
+        using float_uint = typename float_info<Float>::carrier_uint;
+        return ((float_uint(1) << float_info<Float>::exponent_bits) - 1) << num_significand_bits<Float>();
+    }
+
+    template <typename Float> constexpr auto exponent_bias() -> int {
+        return is_float128<Float>() ? 16383 : std::numeric_limits<Float>::max_exponent - 1;
+    }
+}
+
+// Untuk menyederhanakan kode, kita ubah namespace detail agar cocok dengan kode asli
+namespace detail {
+    using dragonbox::num_significand_bits;
+}
+
+// =========================================================================
+// 2. KODE HASIL EKSTRAK AWK ANDA (Disesuaikan Agar Standalone)
+// =========================================================================
+template <typename F> struct basic_fp {
+  F f;
+  int e;
+  
+  static constexpr int num_significand_bits = static_cast<int>(sizeof(F) * 8); // Dipermudah dari num_bits<unsigned char>()
+
+  constexpr basic_fp() : f(0), e(0) {}
+  constexpr basic_fp(uint64_t f_val, int e_val) : f(f_val), e(e_val) {}
+
+  template <typename Float> basic_fp(Float n) { assign(n); }                                                                                                                                                                                  
+  
+  // Menggunakan std::enable_if_t sebagai pengganti FMT_ENABLE_IF
+  template <typename Float, typename std::enable_if_t<!is_double_double<Float>::value, int> = 0>
+  auto assign(Float n) -> bool {
+    static_assert(std::numeric_limits<Float>::digits <= 113, "unsupported FP");
+    using carrier_uint = typename dragonbox::float_info<Float>::carrier_uint;                                                    
+    const auto num_float_significand_bits = detail::num_significand_bits<Float>();
+    const auto implicit_bit = carrier_uint(1) << num_float_significand_bits;
+    const auto significand_mask = implicit_bit - 1;
+    
+    auto u = bit_cast<carrier_uint>(n);
+    f = static_cast<F>(u & significand_mask);
+    auto biased_e = static_cast<int>((u & dragonbox::exponent_mask<Float>()) >> num_float_significand_bits);
+    
+    auto is_predecessor_closer = f == 0 && biased_e > 1;
+    if (biased_e == 0)
+      biased_e = 1;  
+    else if (dragonbox::has_implicit_bit<Float>())
+      f += static_cast<F>(implicit_bit);
+    e = biased_e - dragonbox::exponent_bias<Float>() - num_float_significand_bits;
+    if (!dragonbox::has_implicit_bit<Float>()) ++e;
+    return is_predecessor_closer;
+  }
+
+  template <typename Float, typename std::enable_if_t<is_double_double<Float>::value, int> = 0>
+  auto assign(Float n) -> bool {
+    return assign(static_cast<double>(n));
+  }
+};
+
+// =========================================================================
+// 3. UJI COBA DI MAIN
+// =========================================================================
+int main() {
+    std::cout << "=== Pembedahan Bit Floating-Point dengan basic_fp ===\n\n";
+
+    // Kita uji dengan angka 0.5 (dalam biner adalah 1 * 2^-1)
+    double angka_uji = 0.5;
+    
+    // Membuat objek basic_fp dengan tipe tampungan uint64_t untuk mantissanya
+    basic_fp<uint64_t> fp_obj;
+    
+    // Memanggil fungsi assign untuk membedah bit angka_uji
+    bool is_closer = fp_obj.assign(angka_uji);
+
+    std::cout << "Angka Asli: " << angka_uji << "\n";
+    std::cout << "Hasil Dekoding Biner Mentah:\n";
+    std::cout << "  f (Significand murni) : " << fp_obj.f << "\n";
+    std::cout << "  e (Eksponen biner)   : " << fp_obj.e << "\n";
+    std::cout << "  Nilai Matematika      : " << fp_obj.f << " * 2^(" << fp_obj.e << ")\n";
+    std::cout << "  Is Predecessor Closer : " << (is_closer ? "true" : "false") << "\n";
+
+    return 0;
+}
+
+```
+
+🔎 Mengapa Fungsi Ini Mengembalikan Nilai bool?
+
+Perhatikan baris terakhir fungsi `assign`: `return is_predecessor_closer;`.
+
+Nilai boolean ini sangat penting untuk **logika pembulatan (_round-to-nearest_)** pada algoritma Dragonbox. Ketika sebuah bilangan biner berada tepat di tengah-tengah dua representasi angka desimal, Dragonbox harus memilih apakah akan membulatkan ke atas (*successor*) atau ke bawah (*predecessor*). Jika `is_predecessor_closer` bernilai `true`, sistem tahu bahwa interval biner di bawahnya memiliki jarak batas yang lebih rapat, sehingga teks desimal yang dihasilkan nantinya akan disesuaikan agar tidak melanggar batasan presisi IEEE 754.
+
+Sekarang Anda telah mengekstrak seluruh pustaka matematika penunjang dari Dragonbox. Jika Anda tertarik untuk melihat bagaimana nilai biner mentah dari `basic_fp` ini **dikalikan dengan tabel konstanta pangkat sepuluh** untuk menjadi desimal ilmiah, saya bisa bantu Anda untuk:
+- Mencari letak **struktur `cache_entry_type`** yang menampung konstanta pangkat sepuluh.
+- Mengekstrak fungsi `get_cached_power` yang sempat terlewat di baris 1473.
+
+<br>
+
+qa: 
+Bagian mana yang ingin Anda bedah selanjutnya?
+
+<br>
+
+---
+
+<br>
+
+qs: 
+`awk '{if(NR>=1635) print; if(NR==1653) exit}' $HOME/.cmake_fetchcontent_cache/fmt-v12.2.0/fmt-src/include/fmt/format.h`
+```cpp
+using fp = basic_fp<ullong>;
+
+// Normalizes the value converted from double and multiplied by (1 << SHIFT).
+template <int SHIFT = 0, typename F>
+FMT_CONSTEXPR auto normalize(basic_fp<F> value) -> basic_fp<F> {
+  // Handle subnormals.
+  const auto implicit_bit = F(1) << num_significand_bits<double>();
+  const auto shifted_implicit_bit = implicit_bit << SHIFT;
+  while ((value.f & shifted_implicit_bit) == 0) {
+    value.f <<= 1;
+    --value.e;
+  }
+  // Subtract 1 to account for hidden bit.
+  const auto offset = basic_fp<F>::num_significand_bits -
+                      num_significand_bits<double>() - SHIFT - 1;
+  value.f <<= offset;
+  value.e -= offset;
+  return value;
+}
+
+```
+
+<br>
+
+aa: 
+Fungsi **normalize** yang Anda ekstrak digunakan untuk melakukan **normalisasi bit** pada objek `basic_fp`. Normalisasi adalah proses menggeser bit *significand* (`value.f`) ke kiri hingga bit paling signifikannya berada di posisi paling atas register memori, sambil menyesuaikan nilai eksponennya (`value.e`).
+
+Di dalam algoritma Dragonbox, fungsi ini memiliki dua tugas krusial:
+1. **Menangani Bilangan Subnormal**: Jika angka *floating-point* berukuran sangat kecil hingga bit implisitnya bernilai 0 (subnormal), fungsi ini akan melakukan *looping* untuk menggeser bit ke kiri sampai menemukan bit `1` pertama yang valid.
+2. **Penyelarasan Presisi (_Alignment_)**: Menggeser bit *significand* yang tersisa agar rata kiri memenuhi lebar penuh dari tipe data penampungnya (F, dalam hal ini `ullong` atau `uint64_t`), sehingga operasi perkalian 128-bit berikutnya dapat memanfaatkan presisi maksimum hardware.
+
+💡 Cara Menggunakan Secara Mandiri (Standalone)
+
+Agar kode ini dapat berjalan mandiri, Anda membutuhkan struktur `basic_fp` dan fungsi pembantu bit (`num_significand_bits`) yang sudah kita bahas pada langkah sebelumnya. Kita juga perlu mendefinisikan alias `ullong` (biasanya `unsigned long long` atau `uint64_t`).
+
+Berikut adalah contoh kode lengkap siap pakai:
+```cpp
+#include <iostream>
+#include <cstdint>
+#include <limits>
+
+// Alias tipe data seperti yang digunakan oleh pustaka {fmt}
+using ullong = unsigned long long;
+
+// 1. Masukkan komponen dasar basic_fp dari ekstrak sebelumnya
+template <typename F> struct basic_fp {
+  F f;
+  int e;
+  static constexpr int num_significand_bits = static_cast<int>(sizeof(F) * 8);
+  constexpr basic_fp() : f(0), e(0) {}
+  constexpr basic_fp(F f_val, int e_val) : f(f_val), e(e_val) {}
+};
+
+namespace dragonbox {
+    // Fungsi pembantu hitung bit (asumsi tipe double standar IEEE 754 = 52 bit)
+    template <typename Float> constexpr auto num_significand_bits() -> int {
+        return 52; 
+    }
+}
+
+// Alias agar sesuai dengan kode asli {fmt}
+using fp = basic_fp<ullong>;
+
+// =========================================================================
+// KODE HASIL EKSTRAK AWK ANDA (Baris 1635)
+// =========================================================================
+template <int SHIFT = 0, typename F>
+inline auto normalize(basic_fp<F> value) -> basic_fp<F> {
+  // Menangani bilangan subnormal dengan mendeteksi bit implisit yang tergeser
+  const auto implicit_bit = F(1) << dragonbox::num_significand_bits<double>();
+  const auto shifted_implicit_bit = implicit_bit << SHIFT;
+  
+  while ((value.f & shifted_implicit_bit) == 0) {
+    value.f <<= 1;
+    --value.e;
+  }
+  
+  // Menggeser sisa bit agar rata kiri penuh (memenuhi kapasitas tipe data F)
+  const auto offset = basic_fp<F>::num_significand_bits -
+                      dragonbox::num_significand_bits<double>() - SHIFT - 1;
+  value.f <<= offset;
+  value.e -= offset;
+  return value;
+}
+
+int main() {
+    std::cout << "=== Demo Normalisasi Bit basic_fp (Dragonbox) ===\n\n";
+
+    // Kita simulasikan sebuah angka subnormal kecil hasil pembedahan bit
+    // Nilai awal: f = 0x0010000000000000 (tidak rata kiri penuh), e = -100
+    fp angka_mentah(0x0010000000000000ULL, -100);
+
+    std::cout << "Sebelum Dinormalisasi:\n";
+    std::cout << "  f : 0x" << std::hex << angka_mentah.f << "\n";
+    std::cout << "  e : " << std::dec << angka_mentah.e << "\n";
+
+    // Eksekusi fungsi normalize
+    fp angka_normal = normalize(angka_mentah);
+
+    std::cout << "\nSetelah Dinormalisasi:\n";
+    std::cout << "  f : 0x" << std::hex << angka_normal.f << "\n";
+    std::cout << "  e : " << std::dec << angka_normal.e << "\n";
+    std::cout << "  (Bit f sekarang tergeser ke atas untuk presisi penuh)\n";
+
+    return 0;
+}
+
+```
+
+🔍 Membedah Logika Matematika di Balik Kode
+
+Perhatikan variabel `offset` pada potongan kode:
+```cpp
+const auto offset = basic_fp<F>::num_significand_bits - num_significand_bits<double>() - SHIFT - 1;
+
+```
+Jika kita menggunakan `F` sebagai `uint64_t` (64 bit) dan memproses tipe `double` (52 bit significand stored), maka jika `SHIFT` bernilai 0:
+
+\(\text{offset}=64-52-0-1=11\)
+
+Kode selanjutnya melakukan `value.f <<= 11;` dan `value.e -= 11;`. Operasi ini secara instan mendorong isi *significand* 11 bit ke kiri agar menempel tepat di ujung batas 64-bit register CPU. Karena nilainya dikalikan sebesar \(2^{11}\), maka eksponen biner `value.e` harus dikurangi 11 agar nilai matematis aslinya tidak berubah.
+
+<br>
+
+qa: 
+Apakah Anda ingin melanjutkan ekstraksi ke baris berikutnya untuk melihat **bagaimana data `fp` yang telah dinormalisasi ini dikalikan dengan konstanta pangkat sepuluh**, atau ada detail **operasi bitwise _shifting_** lain yang ingin Anda bedah?
+
+Bila Anda ingin melanjutkan, beri tahu saya jika Anda ingin mencari letak implementasi fungsi `get_cached_power` yang bertugas menyediakan angka pengali tersebut.
+
+<br>
+
+---
+
+<br>
+
+qs: 
+awk '{if(NR>=1655) print; if(NR==1671) exit}' $HOME/.cmake_fetchcontent_cache/fmt-v12.2.0/fmt-src/include/fmt/format.h  
+```cpp
+// Computes lhs * rhs / pow(2, 64) rounded to nearest with half-up tie breaking.
+FMT_CONSTEXPR inline auto multiply(uint64_t lhs, uint64_t rhs) -> uint64_t {
+#if FMT_USE_INT128
+  auto product = static_cast<__uint128_t>(lhs) * rhs;
+  auto f = static_cast<uint64_t>(product >> 64);
+  return (static_cast<uint64_t>(product) & (1ULL << 63)) != 0 ? f + 1 : f;
+#else
+  // Multiply 32-bit parts of significands.
+  uint64_t mask = (1ULL << 32) - 1;
+  uint64_t a = lhs >> 32, b = lhs & mask;
+  uint64_t c = rhs >> 32, d = rhs & mask;                                                                                      uint64_t ac = a * c, bc = b * c, ad = a * d, bd = b * d;                                                                     // Compute mid 64-bit of result and round.
+  uint64_t mid = (bd >> 32) + (ad & mask) + (bc & mask) + (1U << 31);
+  return ac + (ad >> 32) + (bc >> 32) + (mid >> 32);                                                                         #endif
+}
+
+```
+
+<br>
+
+---
+
+<br>
+
 qs:
 `grep -n "auto put(" $HOME/.cmake_fetchcontent_cache/fmt-v12.2.0/fmt-src/include/fmt/format.h`
 `sed -n '3914,3940p' $HOME/.cmake_fetchcontent_cache/fmt-v12.2.0/fmt-src/include/fmt/format.h`
