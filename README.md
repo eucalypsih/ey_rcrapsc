@@ -1,14 +1,26 @@
 # ey_rcrapsc
 
-`set --no-cone '!/*' '/README.md' '/myp/'`
+
 ```bash
-owner="eucalypsih";repo="ey_rcrapsc";git clone -q --filter=blob:none --no-checkout git@github.com:${owner}/${repo}.git && sleep 0.5 && cd $repo && sleep 0.5 && un="eucalypsih";ue="eucalypsih@gmail.com";git config user.name "$un" && sleep 0.5 && git config user.email "$ue" && sleep 0.5 && git config gpg.format ssh && sleep 0.5 && git config user.signingkey ~/.ssh/id_rsa.pub && sleep 0.5 && git config commit.gpgsign true && sleep 0.5 && git config gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers && sleep 0.5 && git sparse-checkout set --no-cone '!/*' '/README.md' '/myp/' && sleep 0.5 && git checkout main
-
+o="eucalypsih";r="ey_rcrapsc";rp="/data/data/com.termux/files/home/${r}";git clone -q --filter=blob:none --no-checkout git@github.com:${o}/${r}.git "$rp" && sleep 0.5 && for cfg in "user.name eucalypsih" "user.email eucalypsih@gmail.com" "gpg.format ssh" "user.signingkey ~/.ssh/id_rsa.pub" "commit.gpgsign true" "gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers";do git -C "$rp" config $cfg && sleep 0.5;done
 ```
-`owner="eucalypsih";repo="ey_rcrapsc";git clone -q --filter=blob:none --no-checkout git@github.com:${owner}/${repo}.git && sleep 0.5 && cd $repo && sleep 0.5 && un="eucalypsih";ue="eucalypsih@gmail.com";git config user.name "$un" && sleep 0.5 && git config user.email "$ue" && sleep 0.5 && git config gpg.format ssh && sleep 0.5 && git config user.signingkey ~/.ssh/id_rsa.pub && sleep 0.5 && git config commit.gpgsign true && sleep 0.5 && git config gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers && sleep 0.5 && git sparse-checkout set --no-cone '!/*' '/README.md' '/myp/' && sleep 0.5 && git checkout main`
+`o="eucalypsih";r="ey_rcrapsc";rp="/data/data/com.termux/files/home/${r}";git clone -q --filter=blob:none --no-checkout git@github.com:${o}/${r}.git "$rp" && sleep 0.5 && for cfg in "user.name eucalypsih" "user.email eucalypsih@gmail.com" "gpg.format ssh" "user.signingkey ~/.ssh/id_rsa.pub" "commit.gpgsign true" "gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers";do git -C "$rp" config $cfg && sleep 0.5;done`
+
+<br>
+
+- `set --no-cone '!/*' '/README.md' '/fmt/README.md'`
+```bash
+o="eucalypsih";r="ey_rcrapsc";rp="/data/data/com.termux/files/home/${r}";git -C "$rp" sparse-checkout set --no-cone '!/*' '/README.md' '/fmt/README.md' && sleep 0.5 && git -C "$rp" checkout -f main
+```
+`o="eucalypsih";r="ey_rcrapsc";rp="/data/data/com.termux/files/home/${r}";git -C "$rp" sparse-checkout set --no-cone '!/*' '/README.md' '/fmt/README.md' && sleep 0.5 && git -C "$rp" checkout -f main`
+
+
+<br>
 
 ---
----
+
+<br>
+
 
 ```bash
 cmake -B build -S . -DCMAKE_INSTALL_PREFIX=./dist -DCMAKE_BUILD_TYPE=Debug
